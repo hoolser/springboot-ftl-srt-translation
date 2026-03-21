@@ -4,6 +4,9 @@ import com.tasos.demo.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +19,21 @@ public class HomeController {
     @Autowired
     private MessageService messageService;
 
+    private boolean isUserAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            return authentication.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .anyMatch(auth -> auth.equals("ROLE_ADMIN"));
+        }
+        return false;
+    }
+
     @GetMapping("/")
     public String home(Model model) {
         logger.info("Start HomeController.home");
         model.addAttribute("message", messageService.getMessage());
+        model.addAttribute("isAdmin", isUserAdmin());
         logger.info("End HomeController.home");
         return "home";
     }

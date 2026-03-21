@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,7 @@ public class SrtTranslationController {
     /**
      * Translate SRT file from English to Greek and save to shared container
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/translateEnToEl")
     public ResponseEntity<String> translateSrtEnToEl(
             @RequestPart("file") MultipartFile file,
@@ -96,6 +98,7 @@ public class SrtTranslationController {
     /**
      * Download the translated SRT file
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/download")
     public ResponseEntity<byte[]> downloadTranslatedSrt(String fileName) {
         logger.info("Downloading translated SRT file: {}", fileName);
@@ -122,6 +125,7 @@ public class SrtTranslationController {
     /**
      * List all translated files
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/listTranslations")
     public ResponseEntity<String> listTranslatedFiles() {
         logger.info("Listing translated SRT files");

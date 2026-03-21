@@ -2,6 +2,8 @@
 <html>
 <head>
   <title>SRT Subtitle Translation</title>
+  <meta name="_csrf" content="${_csrf.token}"/>
+  <meta name="_csrf_header" content="${_csrf.headerName}"/>
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <style>
@@ -488,6 +490,10 @@
     const formData = new FormData();
     formData.append('file', selectedFile);
 
+    // Get CSRF token
+    const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+
     // Show progress section
     document.getElementById('progressSection').classList.add('show');
     document.getElementById('responseSection').style.display = 'none';
@@ -501,11 +507,21 @@
       updateProgress(progress);
     }, 500);
 
-    // Send translation request
-    fetch('/api/srt/translation/translateEnToEl?provider=' + encodeURIComponent(provider), {
+    // Prepare request options
+    const requestOptions = {
       method: 'POST',
       body: formData
-    })
+    };
+
+    // Add CSRF token to headers if available
+    if (csrfToken && csrfHeader) {
+      requestOptions.headers = {
+        [csrfHeader]: csrfToken
+      };
+    }
+
+    // Send translation request
+    fetch('/api/srt/translation/translateEnToEl?provider=' + encodeURIComponent(provider), requestOptions)
     .then(response => {
       clearInterval(progressInterval);
       updateProgress(100);

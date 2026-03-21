@@ -1,102 +1,73 @@
-# 🎬 SRT Translation Application
+# Spring Boot SRT Translation
 
-A **Spring Boot** application for translating SRT subtitle files using either **DeepL** or **Azure Translator** APIs. This application features a user-friendly interface built with [Freemarker](https://freemarker.apache.org/) templates and supports both local file storage and Azure Blob Storage.
+This is a Spring Boot application that provides an API for translating SRT subtitle files from English to Greek.
 
-## 🚀 Features
+## Features
 
-- **Dual Translation Provider Support**: Choose between DeepL or Azure Translator
-- **SRT File Translation**: Translate subtitle files while preserving their structure
-- **Batch Processing**: Optimized batch sizes for each translation provider
-- **Rate Limiting & Retry Logic**: Built-in handling for API rate limits
-- **Multiple Storage Options**: Local file system or Azure Blob Storage
-- **Freemarker Template Engine**: Dynamic HTML page rendering
-- **Multi-language Support**: English and Greek message localization
-- **Responsive Web Interface**: Modern UI for file uploads and translations
+-   Translate SRT files from English to Greek.
+-   Support for DeepL and Azure translation services.
+-   File size validation.
+-   Download translated files.
+-   List translated files.
 
+## SRT Translation Batch Size Strategy
 
+### DeepL (6 items per batch)
+-   Smaller batches provide better context for gender agreement & grammar.
+-   Good for quality-focused translations.
+-   ~6-8 requests for 100 subtitles.
 
-## 🏁 Getting Started
+### Azure (50 items per batch)
+-   LARGER batches = FEWER requests = avoid 429 rate limit errors.
+-   Azure Translator supports up to 100 items per request.
+-   Reduces request frequency from ~16 to 2 requests for 100 subtitles.
+-   Minimizes 429 "Too Many Requests" errors.
+-   Still provides reasonable translation context.
+-   Azure charges per character, not per request (cost-efficient).
 
-### Prerequisites
+### Rate Limiting & Retry
+-   Azure: 500ms delay between requests + exponential backoff (1s, 2s, 4s) on 429 errors.
+-   Free tier: 2 requests/second.
+-   Standard tier: 10 requests/second.
 
-- Java 21+
-- Maven 3.x
-- Translation API credentials (DeepL OR Azure Translator)
+## Security
 
-### Configuration
+The `/api/srt/translation` endpoint is secured with basic authentication. You need to provide a username and password with the `ADMIN` role to access this endpoint.
 
-The application uses environment variables for sensitive configuration. Configure one of the translation providers below.
+The credentials can be configured in the `application.properties` file or as environment variables:
 
-#### Translation Provider Selection
+-   `app.security.username`
+-   `app.security.password`
 
-Set the active translation provider in `application.properties`:
+## How to Run
 
-```properties
-srt.translation.provider=deepl  # or 'azure'
-```
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/springboot-ftl-srt-translation.git
+    ```
+2.  **Navigate to the project directory:**
+    ```bash
+    cd springboot-ftl-srt-translation
+    ```
+3.  **Set the environment variables** for the translation provider and API keys in the `application.properties` file.
+4.  **Run the application:**
+    ```bash
+    mvn spring-boot:run
+    ```
 
-#### DeepL Translation Configuration
+The application will be available at `http://localhost:8080`.
 
-1. **Get API Key**: Sign up at [DeepL Pro API](https://www.deepl.com/pro-api)
-2. **Set Environment Variable**:
-   - **Windows**: `set DEEPL_API_KEY=your_api_key_here`
-   - **Linux/macOS**: `export DEEPL_API_KEY=your_api_key_here`
+## API Endpoints
 
-**DeepL Batch Size Strategy**:
-- Batch size: **6 items per request**
-- Smaller batches provide better context for gender agreement & grammar
-- Good for quality-focused translations
-- Approximately 6-8 requests for 100 subtitles
+-   `POST /api/srt/translation/translateEnToEl`: Translate an SRT file.
+-   `GET /api/srt/translation/download?fileName={fileName}`: Download a translated file.
+-   `GET /api/srt/translation/listTranslations`: List all translated files.
+-   `GET /api/srt/translation/maxFileSize`: Get the maximum allowed file size.
+-   `GET /api/srt/translation/provider`: Get the active translation provider.
 
-#### Azure Translator Configuration
+## License
 
-1. **Create Azure Translator Service**: Set up in [Azure Portal](https://portal.azure.com)
-2. **Set Environment Variables**:
-   - **Windows**:
-     ```
-     set AZURE_TRANSLATOR_ENDPOINT=https://api.cognitive.microsofttranslator.com
-     set AZURE_TRANSLATOR_KEY=your_api_key_here
-     set AZURE_TRANSLATOR_REGION=westeurope
-     ```
-   - **Linux/macOS**:
-     ```
-     export AZURE_TRANSLATOR_ENDPOINT=https://api.cognitive.microsofttranslator.com
-     export AZURE_TRANSLATOR_KEY=your_api_key_here
-     export AZURE_TRANSLATOR_REGION=westeurope
-     ```
-
-**Azure Batch Size Strategy**:
-- Batch size: **50 items per request**
-- LARGER batches = FEWER requests = avoid 429 rate limit errors
-- Azure Translator supports up to 100 items per request
-- Reduces request frequency from ~16 to 2 requests for 100 subtitles
-- Minimizes 429 "Too Many Requests" errors
-- Still provides reasonable translation context
-- Azure charges per character, not per request (cost-efficient)
-
-**Rate Limiting & Retry**:
-- 500ms delay between requests
-- Exponential backoff on 429 errors: 1s, 2s, 4s
-- Free tier: 2 requests/second
-- Standard tier: 10 requests/second
-
-#### Local File Storage Configuration
-
-By default, the application stores files locally at:
-```
-%USERPROFILE%\tasos-storage
-```
-
-To customize, set:
-```properties
-local-storage-path=/your/custom/path
-```
-
-#### Azure Blob Storage Configuration (Optional)
-
-For Azure Blob Storage integration, set the connection string:
-- **Windows**: `set AZURE_STORAGE_CONNECTION_STRING=your_connection_string_here`
-- **Linux/macOS**: `export AZURE_STORAGE_CONNECTION_STRING=your_connection_string_here`
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
 
