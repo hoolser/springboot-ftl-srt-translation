@@ -65,10 +65,7 @@ The application will be available at `http://localhost:8080`.
 -   `GET /api/srt/translation/maxFileSize`: Get the maximum allowed file size.
 -   `GET /api/srt/translation/provider`: Get the active translation provider.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
+---
 
 
 ## 🖥️ Running Locally
@@ -179,7 +176,6 @@ src
 - **Java 21**
 - **Spring Boot 3.x**
 - **Freemarker** - Template engine
-- **Azure SDK** - For Blob Storage integration
 - **DeepL API** - Translation service
 - **Azure Translator API** - Translation service
 - **Maven** - Build tool
