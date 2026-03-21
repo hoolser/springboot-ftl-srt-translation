@@ -160,7 +160,7 @@ src
 - **SrtTranslationService**: Core translation logic with provider abstraction
 - **SrtParser**: Parses and rebuilds SRT subtitle files
 - **SrtTranslationServiceImpl**: Implements translation with batch processing
-- **StorageBlobsService**: Manages file storage (local or Azure Blob)
+- **StorageBlobsService**: Manages file storage (locally)
 - **Templates**: Freemarker templates for web UI
 
 ## 🔄 Translation Workflow
