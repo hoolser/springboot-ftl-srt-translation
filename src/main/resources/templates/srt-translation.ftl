@@ -334,7 +334,7 @@
   <div class="srt-header">
     <h1>🎬 SRT Subtitle Translation</h1>
     <p>English (EN) → Greek (EL) Translation</p>
-    <p>Powered by <span id="translationProvider">DEEPL</span> API</p>
+    <p>Powered by <span id="translationProvider">DEEPL or Azure Translator</span> API</p>
   </div>
 
   <div class="info-box">
