@@ -265,7 +265,10 @@ public class StorageBlobsServiceImpl implements StorageBlobsService {
             Path filePath = directoryPath.resolve(fileName).normalize();
             validateDirectoryPath(filePath.getParent());
 
-            Files.write(filePath, file.getBytes());
+            // Use streaming to avoid loading entire file into memory
+            try (var inputStream = file.getInputStream()) {
+                Files.copy(inputStream, filePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            }
             logger.info("File '{}' uploaded to directory '{}' (admin={}). Total size: {} bytes",
                 fileName, container, isAdmin, currentTotalSize + newFileSize);
             return "File uploaded successfully";
