@@ -221,6 +221,11 @@ public class StorageBlobsServiceImpl implements StorageBlobsService {
 
     @Override
     public String uploadFileToContainer(String container, MultipartFile file) {
+        return uploadFileToContainer(container, file, false);
+    }
+
+    @Override
+    public String uploadFileToContainer(String container, MultipartFile file, boolean isAdmin) {
         try {
             Path directoryPath = getDirectoryPath(container);
             validateDirectoryPath(directoryPath);
@@ -241,8 +246,15 @@ public class StorageBlobsServiceImpl implements StorageBlobsService {
             }
 
             long newFileSize = file.getSize();
-            if (currentTotalSize + newFileSize > StorageConstants.MAX_TOTAL_SIZE_BYTES) {
-                return "Upload failed: total container size limit (" + StorageConstants.MAX_TOTAL_SIZE_MB + " MB) exceeded.";
+
+            // Determine the max size based on admin status
+            long maxSizeBytes = isAdmin ? StorageConstants.MAX_TOTAL_SIZE_ADMIN_BYTES : StorageConstants.MAX_TOTAL_SIZE_BYTES;
+            long maxSizeMB = isAdmin ? StorageConstants.MAX_TOTAL_SIZE_ADMIN_MB : StorageConstants.MAX_TOTAL_SIZE_MB;
+
+            if (currentTotalSize + newFileSize > maxSizeBytes) {
+                logger.warn("Upload failed for {}: total size {} would exceed limit {} bytes (admin={})",
+                    file.getOriginalFilename(), currentTotalSize + newFileSize, maxSizeBytes, isAdmin);
+                return "Upload failed: total container size limit (" + maxSizeMB + " MB) exceeded.";
             }
 
             String fileName = file.getOriginalFilename();
@@ -254,7 +266,8 @@ public class StorageBlobsServiceImpl implements StorageBlobsService {
             validateDirectoryPath(filePath.getParent());
 
             Files.write(filePath, file.getBytes());
-            logger.info("File '{}' uploaded to directory '{}'.", fileName, container);
+            logger.info("File '{}' uploaded to directory '{}' (admin={}). Total size: {} bytes",
+                fileName, container, isAdmin, currentTotalSize + newFileSize);
             return "File uploaded successfully";
         } catch (Exception e) {
             logger.error("Failed to upload file to directory", e);

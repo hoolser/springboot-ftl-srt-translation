@@ -9,14 +9,25 @@ public final class StorageConstants {
     // ================== File Size Limits ==================
 
     /**
-     * Maximum total storage size in MB for blob storage operations
+     * Maximum total storage size in MB for blob storage operations (standard users)
      */
     public static final long MAX_TOTAL_SIZE_MB = 100;
 
     /**
-     * Maximum total storage size in bytes for blob storage operations
+     * Maximum total storage size in bytes for blob storage operations (standard users)
      */
     public static final long MAX_TOTAL_SIZE_BYTES = MAX_TOTAL_SIZE_MB * 1024 * 1024;
+
+    /**
+     * Maximum total storage size in MB for blob storage operations (ADMIN users)
+     * Admin users can upload up to 15GB to the shared container
+     */
+    public static final long MAX_TOTAL_SIZE_ADMIN_MB = 15360;  // 15 GB
+
+    /**
+     * Maximum total storage size in bytes for blob storage operations (ADMIN users)
+     */
+    public static final long MAX_TOTAL_SIZE_ADMIN_BYTES = MAX_TOTAL_SIZE_ADMIN_MB * 1024 * 1024;
 
     /**
      * Maximum SRT file size in MB for translation operations

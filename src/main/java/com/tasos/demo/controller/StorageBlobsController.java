@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 @RestController
@@ -35,6 +39,16 @@ public class StorageBlobsController {
     private static final Logger logger = LoggerFactory.getLogger(StorageBlobsController.class);
 
     private final StorageBlobsService storageBlobsService;
+
+    private boolean isUserAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            return authentication.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .anyMatch(auth -> auth.equals("ROLE_ADMIN"));
+        }
+        return false;
+    }
 
     @GetMapping("/test")
     public String test() {
@@ -139,13 +153,15 @@ public class StorageBlobsController {
     }
 
 
-    // Upload file endpoint
+    // Upload file endpoint - Admin users get 15GB limit, others get 100MB limit
     @PostMapping("/share/upload")
     public String uploadFileToShareContainer(@RequestPart("file") MultipartFile file) {
         if (file.isEmpty()) {
             return "No file selected.";
         }
-        return storageBlobsService.uploadFileToContainer(StorageConstants.SHARE_CONTAINER, file);
+        boolean isAdmin = isUserAdmin();
+        logger.info("File upload for: {} (admin={})", file.getOriginalFilename(), isAdmin);
+        return storageBlobsService.uploadFileToContainer(StorageConstants.SHARE_CONTAINER, file, isAdmin);
     }
 
     // Download file endpoint

@@ -22,6 +22,15 @@ public interface StorageBlobsService {
 
     String uploadFileToContainer(String container, MultipartFile file);
 
+    /**
+     * Upload a file to a container with admin size limit support
+     * @param container the container name
+     * @param file the file to upload
+     * @param isAdmin if true, uses 15GB limit; otherwise uses 100MB limit
+     * @return upload status message
+     */
+    String uploadFileToContainer(String container, MultipartFile file, boolean isAdmin);
+
     byte[] downloadFileFromContainer(String container, String fileName);
 
     String clearContainer(String container);
