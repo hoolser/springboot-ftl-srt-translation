@@ -321,6 +321,11 @@
 </head>
 <body>
 
+<div style="text-align: center; margin-bottom: 30px; margin-top: 20px;">
+    <img src="/images/logo2.png" alt="Logo" style="max-width: 400px; height: auto;">
+</div>
+<hr style="border: none; height: 2px; background-color: #28a745; margin: 20px 0;">
+
 <div class="back-button">
   <a href="/">← Back to Home Page</a>
 </div>

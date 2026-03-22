@@ -29,6 +29,11 @@
     </style>
 </head>
 <body>
+<div style="text-align: center; margin-bottom: 30px;">
+    <img src="/images/logo2.png" alt="Logo" style="max-width: 400px; height: auto;">
+</div>
+<hr style="border: none; height: 2px; background-color: #28a745; margin: 20px 0;">
+
 <div class="centered-message">
     <#if isAdmin?? && isAdmin>
         <div class="logout-container">
@@ -38,7 +43,7 @@
             </form>
         </div>
     </#if>
-    <h1>Welcome to the Spring Boot Demo of Tasos!</h1>
+    <h1>Welcome to the LeafLogic!</h1>
     <p>${message}</p>
     <div class="home-buttons">
         <a href="/storage-blob-page">

@@ -6,6 +6,11 @@
   <link rel="icon" type="image/x-icon" href="/images/marina-favicon.ico">
 </head>
 <body>
+<div style="text-align: center; margin-bottom: 30px; margin-top: 20px;">
+    <img src="/images/logo2.png" alt="Logo" style="max-width: 400px; height: auto;">
+</div>
+<hr style="border: none; height: 2px; background-color: #28a745; margin: 20px 0;">
+
 <img class="centered-image" src="/images/marina.jpeg" alt="Marina Image">
 <h1 class="centered-message">${message}</h1>
 

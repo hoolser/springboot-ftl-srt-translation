@@ -9,7 +9,7 @@
 
 .home-button {
     padding: 12px 20px;
-    background-color: #007BFF; /* Change to a blue color */
+    background-color: #28a745; /* Change to a green color */
     color: white;
     border: none;
     border-radius: 8px; /* Rounded corners */
@@ -21,7 +21,7 @@
 }
 
 .home-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #1e7e34; /* Darker green on hover */
     transform: scale(1.05); /* Slightly enlarge the button */
 }
 /*END of Home's page specific styles */
@@ -70,7 +70,7 @@
 
 .storage-button {
     padding: 7px 15px;
-    background-color: #007BFF; /* Change to a blue color */
+    background-color: #28a745; /* Change to a green color */
     color: white;
     border: none;
     border-radius: 8px; /* Rounded corners */
@@ -81,7 +81,7 @@
 }
 
 .storage-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #1e7e34; /* Darker green on hover */
     transform: scale(1.02); /* Slightly enlarge the button */
 }
 
