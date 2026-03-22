@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Spring Boot FreeMarker Landing Page</title>
+    <title>LeafLogic Landing Page</title>
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <link rel="stylesheet" href="/css/styles.css">
