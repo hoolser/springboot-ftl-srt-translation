@@ -65,7 +65,6 @@ public class SecurityConfig {
                         )
                         .xssProtection(withDefaults())
                         .contentTypeOptions(withDefaults())  // Prevent MIME type sniffing
-                        .httpStrictTransportSecurity()  // HSTS: Force HTTPS only
                 );
         return http.build();
     }
