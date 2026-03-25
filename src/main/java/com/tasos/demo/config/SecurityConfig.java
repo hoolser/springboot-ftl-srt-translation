@@ -56,6 +56,16 @@ public class SecurityConfig {
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
                         .permitAll()
+                )
+                // Add security headers
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.sameOrigin())  // Prevent clickjacking
+                        .contentSecurityPolicy(csp -> csp
+                                .policyDirectives("default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'")
+                        )
+                        .xssProtection(withDefaults())
+                        .contentTypeOptions(withDefaults())  // Prevent MIME type sniffing
+                        .httpStrictTransportSecurity()  // HSTS: Force HTTPS only
                 );
         return http.build();
     }
