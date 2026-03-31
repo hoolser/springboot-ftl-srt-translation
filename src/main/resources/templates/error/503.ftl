@@ -13,6 +13,8 @@
             align-items: center;
             justify-content: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: auto;
+            padding: 20px;
         }
         .error-container {
             background: white;
@@ -21,6 +23,7 @@
             text-align: center;
             max-width: 500px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            width: 100%;
         }
         .error-code {
             font-size: 120px;
@@ -41,35 +44,17 @@
             margin-bottom: 30px;
             line-height: 1.6;
         }
-        .btn-home {
-            display: inline-block;
-            padding: 12px 30px;
-            background: #f5576c;
-            color: white;
-            text-decoration: none;
+        .error-details {
+            background: #f8f9fa;
+            border-left: 4px solid #f5576c;
+            padding: 15px;
             border-radius: 5px;
-            transition: background 0.3s;
-            font-weight: 600;
-        }
-        .btn-home:hover {
-            background: #f093fb;
-            color: white;
-        }
-    </style>
-</head>
-<body>
-    <div class="error-container">
-        <div class="error-code">🔧</div>
-        <div class="error-title">Service Unavailable</div>
-        <div class="error-message">
-            The server is temporarily unavailable. Please try again later.
-        </div>
-        <a href="/" class="btn-home">Back to Home</a>
-    </div>
-</body>
-</html>
-            font-size: 14px;
+            text-align: left;
+            margin-bottom: 30px;
+            font-size: 13px;
             color: #555;
+            max-height: 150px;
+            overflow-y: auto;
         }
         .btn-home {
             display: inline-block;
@@ -78,17 +63,102 @@
             color: white;
             text-decoration: none;
             border-radius: 5px;
-            transition: background 0.3s;
+            transition: all 0.3s;
             font-weight: 600;
         }
         .btn-home:hover {
             background: #f093fb;
             color: white;
+            transform: translateY(-2px);
+        }
+        .emoji-503 {
+            font-size: 80px;
+            margin-bottom: 20px;
+            display: block;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .error-container {
+                padding: 40px 25px;
+            }
+            .error-code {
+                font-size: 80px;
+                margin-bottom: 15px;
+            }
+            .error-title {
+                font-size: 24px;
+                margin-bottom: 12px;
+            }
+            .error-message {
+                font-size: 16px;
+                margin-bottom: 25px;
+            }
+            .error-details {
+                padding: 15px;
+                margin-bottom: 25px;
+                font-size: 12px;
+            }
+            .emoji-503 {
+                font-size: 60px;
+                margin-bottom: 15px;
+            }
+            .btn-home {
+                padding: 12px 28px;
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .error-container {
+                padding: 30px 15px;
+                border-radius: 15px;
+            }
+            .error-code {
+                font-size: 60px;
+                margin-bottom: 10px;
+            }
+            .error-title {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            .error-message {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+            .error-details {
+                padding: 12px;
+                margin-bottom: 20px;
+                font-size: 11px;
+                max-height: 120px;
+            }
+            .emoji-503 {
+                font-size: 50px;
+                margin-bottom: 10px;
+            }
+            .btn-home {
+                padding: 10px 20px;
+                font-size: 13px;
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="error-container">
+        <span class="emoji-503">🔧</span>
         <div class="error-code">503</div>
         <div class="error-title">Service Unavailable</div>
         <div class="error-message">
@@ -103,5 +173,6 @@
         <a href="/" class="btn-home">Back to Home</a>
     </div>
 </body>
+</html>
 </html>
 

@@ -13,7 +13,8 @@
             align-items: center;
             justify-content: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
+            overflow: auto;
+            padding: 20px;
         }
         .error-container {
             background: white;
@@ -23,6 +24,7 @@
             max-width: 600px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             animation: slideUp 0.5s ease-out;
+            width: 100%;
         }
         @keyframes slideUp {
             from {
@@ -116,6 +118,79 @@
             }
             50% {
                 transform: translateY(-20px);
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .error-container {
+                padding: 40px 25px;
+            }
+            .error-code {
+                font-size: 80px;
+                margin-bottom: 15px;
+            }
+            .error-title {
+                font-size: 24px;
+                margin-bottom: 12px;
+            }
+            .error-message {
+                font-size: 16px;
+                margin-bottom: 25px;
+            }
+            .error-details {
+                padding: 15px;
+                margin-bottom: 25px;
+                font-size: 12px;
+            }
+            .emoji-404 {
+                font-size: 60px;
+                margin-bottom: 15px;
+            }
+            .btn-home, .btn-back {
+                padding: 12px 28px;
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .error-container {
+                padding: 30px 15px;
+                border-radius: 15px;
+            }
+            .error-code {
+                font-size: 60px;
+                margin-bottom: 10px;
+            }
+            .error-title {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            .error-message {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+            .error-details {
+                padding: 12px;
+                margin-bottom: 20px;
+                font-size: 11px;
+                max-height: 120px;
+            }
+            .emoji-404 {
+                font-size: 50px;
+                margin-bottom: 10px;
+            }
+            .button-group {
+                gap: 10px;
+            }
+            .btn-home, .btn-back {
+                padding: 10px 20px;
+                font-size: 13px;
+                flex: 1;
+                min-width: 120px;
             }
         }
     </style>

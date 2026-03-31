@@ -55,6 +55,78 @@
             background: #fcbf49;
             color: #333;
         }
+        .emoji-403 {
+            font-size: 80px;
+            margin-bottom: 20px;
+            display: block;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .error-container {
+                padding: 40px 25px;
+            }
+            .error-code {
+                font-size: 80px;
+                margin-bottom: 15px;
+            }
+            .error-title {
+                font-size: 24px;
+                margin-bottom: 12px;
+            }
+            .error-message {
+                font-size: 16px;
+                margin-bottom: 25px;
+            }
+            .emoji-403 {
+                font-size: 60px;
+                margin-bottom: 15px;
+            }
+            .btn-home {
+                padding: 12px 28px;
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .error-container {
+                padding: 30px 15px;
+                border-radius: 15px;
+            }
+            .error-code {
+                font-size: 60px;
+                margin-bottom: 10px;
+            }
+            .error-title {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            .error-message {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+            .emoji-403 {
+                font-size: 50px;
+                margin-bottom: 10px;
+            }
+            .btn-home {
+                padding: 10px 20px;
+                font-size: 13px;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>

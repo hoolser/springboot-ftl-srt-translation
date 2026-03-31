@@ -59,7 +59,8 @@
 </head>
 <body>
     <div class="error-container">
-        <div class="error-code">📦</div>
+        <span class="emoji-413">📦</span>
+        <div class="error-code">413</div>
         <div class="error-title">File Too Large</div>
         <div class="error-message">
             The file you are trying to upload exceeds the maximum allowed size. Please upload a smaller file.

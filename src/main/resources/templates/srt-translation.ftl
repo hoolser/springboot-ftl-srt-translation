@@ -322,7 +322,9 @@
 <body>
 
 <div style="text-align: center; margin-bottom: 30px; margin-top: 20px;">
-    <img src="/images/logo2-shrunk.webp" alt="Logo" style="max-width: 400px; height: auto;">
+  <a href="/" aria-label="Home Page" style="display: inline-block;">
+      <img src="/images/logo2-shrunk.webp" alt="Logo" style="max-width:400px; height: auto;">
+  </a>
 </div>
 <hr style="border: none; height: 2px; background-color: #28a745; margin: 20px 0;">
 
