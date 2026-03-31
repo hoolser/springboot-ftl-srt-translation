@@ -38,6 +38,8 @@ public class SecurityConfig {
                                 .requestMatchers("/api/storage/blobs/**").permitAll()
                                 // Login page is accessible without authentication
                                 .requestMatchers("/login").permitAll()
+                                // Error pages must be accessible without authentication
+                                .requestMatchers("/error", "/error/**").permitAll()
                                 // Only SRT translation endpoints require ADMIN role
                                 .requestMatchers("/api/srt/translation/**", "/srt-translation-page").hasRole("ADMIN")
                                 // All other endpoints are accessible without authentication

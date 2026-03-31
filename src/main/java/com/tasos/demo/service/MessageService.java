@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 public class MessageService {
 
     public String getMessage() {
-        return "Hello from the Home service!";
+        return "Hello from the Tasos service!";
     }
 
     public String getMessageForTasos() {
