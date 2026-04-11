@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
 @Service
 public class StorageBlobsServiceImpl implements StorageBlobsService {
@@ -206,14 +208,12 @@ public class StorageBlobsServiceImpl implements StorageBlobsService {
                 return "Container does not exist";
             }
 
-            // Delete all files inside first, then the directory
-            File[] files = directoryPath.toFile().listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    Files.delete(file.toPath());
-                }
+            // Recursively delete all files and folders
+            try (Stream<Path> walk = Files.walk(directoryPath)) {
+                walk.sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
             }
-            Files.delete(directoryPath);
             containerMetadataStore.remove(containerName);
             logger.info("Directory '{}' deleted successfully.", containerName);
             return "Container deleted successfully";
@@ -321,16 +321,20 @@ public class StorageBlobsServiceImpl implements StorageBlobsService {
                 return "Container does not exist";
             }
 
-            int deleted = 0;
-            File[] files = directoryPath.toFile().listFiles(File::isFile);
-            if (files != null) {
-                for (File file : files) {
-                    Files.delete(file.toPath());
-                    deleted++;
-                }
+            int[] deleted = {0};
+            // Recursively delete everything EXCEPT the root container directory itself
+            try (Stream<Path> walk = Files.walk(directoryPath)) {
+                walk.sorted(Comparator.reverseOrder())
+                    .filter(path -> !path.equals(directoryPath))
+                    .map(Path::toFile)
+                    .forEach(file -> {
+                        if (file.delete() && file.isFile()) {
+                            deleted[0]++;
+                        }
+                    });
             }
-            logger.info("Deleted {} file(s) from directory '{}'.", deleted, container);
-            return deleted + " file(s) deleted from container.";
+            logger.info("Deleted {} file(s) from directory '{}'.", deleted[0], container);
+            return "All files deleted from container.";
         } catch (Exception e) {
             logger.error("Failed to clear directory", e);
             return e.getMessage();
