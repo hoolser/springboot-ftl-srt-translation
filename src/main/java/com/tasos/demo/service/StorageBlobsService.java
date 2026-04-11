@@ -39,4 +39,6 @@ public interface StorageBlobsService {
 
     String addContainerMetadata(String containerName);
 
+    String extractArchive(String container, String fileName);
+
 }

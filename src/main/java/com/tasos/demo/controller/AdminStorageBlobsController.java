@@ -59,5 +59,10 @@ public class AdminStorageBlobsController {
     public String clearShareContainer() {
         return storageBlobsService.clearContainer(StorageConstants.ADMIN_SHARE_CONTAINER);
     }
+    
+    @PostMapping("/share/extract")
+    public String extractArchive(@RequestParam String fileName) {
+        logger.info("Admin extracting archive: {}", fileName);
+        return storageBlobsService.extractArchive(StorageConstants.ADMIN_SHARE_CONTAINER, fileName);
+    }
 }
-

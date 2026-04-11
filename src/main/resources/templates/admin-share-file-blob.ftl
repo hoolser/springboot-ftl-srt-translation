@@ -50,6 +50,16 @@
 </div>
 
 <div class="storage-container">
+  <h2 class="storage-title">Extract Archive (.zip, .tar, .tar.gz) from Admin Shared Container</h2>
+  <form id="extractForm" method="post" action="/api/admin/storage/blobs/share/extract">
+    <div class="storage-form-group">
+      <input class="storage-input" type="text" id="extractFileName" name="fileName" placeholder="Enter archive file name (e.g. data.zip)" required>
+    </div>
+    <button class="storage-button" type="submit">Extract Archive</button>
+  </form>
+</div>
+
+<div class="storage-container">
   <h2 class="storage-title">Response:</h2>
   <div id="responseMessage" class="storage-response">
     <p>Results will appear here...</p>

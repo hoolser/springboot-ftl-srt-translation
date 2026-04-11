@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 @Service
 public class StorageBlobsServiceImpl implements StorageBlobsService {
@@ -381,6 +385,90 @@ public class StorageBlobsServiceImpl implements StorageBlobsService {
         } catch (Exception e) {
             logger.error("Failed to retrieve directory properties", e);
             return "Error retrieving container properties: " + e.getMessage();
+        }
+    }
+
+    @Override
+    public String extractArchive(String container, String fileName) {
+        try {
+            Path directoryPath = getDirectoryPath(container);
+            validateDirectoryPath(directoryPath);
+            Path filePath = directoryPath.resolve(fileName).normalize();
+            validateDirectoryPath(filePath.getParent());
+
+            if (!Files.exists(filePath) || !Files.isRegularFile(filePath)) {
+                return "File does not exist: " + fileName;
+            }
+
+            String lowerName = fileName.toLowerCase();
+
+            // Determine extraction folder name based on archive name
+            String folderName = fileName;
+            if (lowerName.endsWith(".tar.gz")) {
+                folderName = fileName.substring(0, fileName.length() - 7);
+            } else if (lowerName.endsWith(".tgz")) {
+                folderName = fileName.substring(0, fileName.length() - 4);
+            } else {
+                int lastDot = fileName.lastIndexOf('.');
+                if (lastDot > 0) {
+                    folderName = fileName.substring(0, lastDot);
+                }
+            }
+
+            Path extractDir = directoryPath.resolve(folderName).normalize();
+            validateDirectoryPath(extractDir);
+
+            if (!Files.exists(extractDir)) {
+                Files.createDirectories(extractDir);
+            }
+
+            if (lowerName.endsWith(".zip")) {
+                int count = 0;
+                try (ZipInputStream zis = new ZipInputStream(new FileInputStream(filePath.toFile()))) {
+                    ZipEntry zipEntry = zis.getNextEntry();
+                    byte[] buffer = new byte[1024];
+
+                    while (zipEntry != null) {
+                        Path newFilePath = extractDir.resolve(zipEntry.getName()).normalize();
+                        validateDirectoryPath(newFilePath); // Avoid Zip Slip vulnerability
+
+                        if (zipEntry.isDirectory()) {
+                            Files.createDirectories(newFilePath);
+                        } else {
+                            if (!Files.exists(newFilePath.getParent())) {
+                                Files.createDirectories(newFilePath.getParent());
+                            }
+                            try (FileOutputStream fos = new FileOutputStream(newFilePath.toFile())) {
+                                int len;
+                                while ((len = zis.read(buffer)) > 0) {
+                                    fos.write(buffer, 0, len);
+                                }
+                            }
+                            count++;
+                        }
+                        zipEntry = zis.getNextEntry();
+                    }
+                    zis.closeEntry();
+                    return "Successfully extracted " + count + " files from zip into folder: " + folderName;
+                }
+            } else if (lowerName.endsWith(".tar") || lowerName.endsWith(".tar.gz") || lowerName.endsWith(".tgz")) {
+                // Use system tar command as cross-platform native approach since Windows 10+ natively ships with tar
+                ProcessBuilder pb = new ProcessBuilder("tar", "-xf", filePath.toAbsolutePath().toString(), "-C", extractDir.toAbsolutePath().toString());
+                pb.directory(extractDir.toFile());
+                Process process = pb.start();
+                int exitCode = process.waitFor();
+                if (exitCode == 0) {
+                    return "Successfully extracted archive natively into folder: " + folderName;
+                } else {
+                    return "Failed to extract tar. System tar exited with code " + exitCode;
+                }
+            } else {
+                return "Unsupported archive format: " + fileName;
+            }
+
+        } catch (Exception e) {
+            logger.error("Failed to extract archive", e);
+            return "Error extracting archive: " + e.getMessage();
         }
     }
 

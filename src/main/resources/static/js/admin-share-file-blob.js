@@ -54,6 +54,25 @@ window.addEventListener('DOMContentLoaded', function() {
             });
     });
 
+    // Extract form AJAX
+    const extractForm = document.getElementById('extractForm');
+    if (extractForm) {
+        extractForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fileName = document.getElementById('extractFileName').value;
+            fetch('/api/admin/storage/blobs/share/extract?fileName=' + encodeURIComponent(fileName), {
+                method: 'POST'
+            })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('responseMessage').textContent = data;
+                })
+                .catch(() => {
+                    document.getElementById('responseMessage').textContent = 'Extraction failed.';
+                });
+        });
+    }
+
     document.getElementById('clearButton').addEventListener('click', function() {
         if (confirm('Are you sure you want to delete all files in the admin shared container?')) {
             fetch('/api/admin/storage/blobs/share/clear', { method: 'POST' })
