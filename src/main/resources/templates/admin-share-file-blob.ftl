@@ -4,6 +4,7 @@
   <title>Admin Share File Blob</title>
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/admin-theme.css">
   <script src="/js/admin-share-file-blob.js"></script>
 </head>
 <body class="storage-page">

@@ -102,6 +102,9 @@
             <a href="/admin-share-file-blob">
                 <button class="home-button" style="margin-top: 30px;">Admin Share File Blob</button>
             </a>
+            <a href="/admin/browser">
+                <button class="home-button" style="margin-top: 30px; background-color: #f39c12;">Admin Container Browser</button>
+            </a>
         </#if>
         <a href="/srt-translation-page">
             <button class="home-button" style="margin-top: 30px;">Go to SRT Translation</button>

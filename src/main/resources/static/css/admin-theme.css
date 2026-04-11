@@ -1,0 +1,24 @@
+/* Admin theme overrides */
+hr {
+  background-color: #d35400 !important;
+}
+.home-button {
+  background-color: #d35400 !important;
+}
+.home-button:hover {
+  background-color: #e67e22 !important;
+}
+.storage-button {
+  background-color: #2c3e50 !important;
+  border-color: #2c3e50 !important;
+}
+.storage-button:hover {
+  background-color: #34495e !important;
+}
+h1, .storage-title {
+  color: #d35400 !important;
+}
+.storage-container {
+  border-top: 4px solid #2c3e50 !important;
+}
+
