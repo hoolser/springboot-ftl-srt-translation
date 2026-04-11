@@ -30,7 +30,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf
                         // Disable CSRF for blob storage endpoints (they don't require authentication)
-                        .ignoringRequestMatchers("/api/storage/blobs/**")
+                        .ignoringRequestMatchers("/api/storage/blobs/**", "/api/admin/storage/blobs/**")
                 )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
@@ -40,8 +40,8 @@ public class SecurityConfig {
                                 .requestMatchers("/login").permitAll()
                                 // Error pages must be accessible without authentication
                                 .requestMatchers("/error", "/error/**").permitAll()
-                                // Only SRT translation endpoints require ADMIN role
-                                .requestMatchers("/api/srt/translation/**", "/srt-translation-page").hasRole("ADMIN")
+                                // Only SRT translation endpoints and Admin storage require ADMIN role
+                                .requestMatchers("/api/srt/translation/**", "/srt-translation-page", "/api/admin/storage/blobs/**", "/admin-share-file-blob").hasRole("ADMIN")
                                 // All other endpoints are accessible without authentication
                                 .anyRequest().permitAll()
                 )
@@ -81,4 +81,3 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(user);
     }
 }
-

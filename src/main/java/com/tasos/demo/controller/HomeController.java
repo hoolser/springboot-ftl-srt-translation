@@ -78,4 +78,14 @@ public class HomeController {
         return "srt-translation";
     }
 
+    @GetMapping("/share-file-blob")
+    public String shareFileBlob() {
+        return "share-file-blob";
+    }
+
+    @GetMapping("/admin-share-file-blob")
+    public String adminShareFileBlob() {
+        return "admin-share-file-blob";
+    }
+
 }

@@ -26,6 +26,48 @@
         .logout-btn:hover {
             background-color: #c0392b;
         }
+        .login-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .login-btn:hover {
+            background-color: #2980b9;
+        }
+        .centered-message {
+            text-align: center;
+            margin: 0 auto;
+            max-width: 800px;
+        }
+        .home-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .home-button {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin: 10px 0;
+        }
+        .home-button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -37,14 +79,16 @@
 <hr style="border: none; height: 2px; background-color: #28a745; margin: 20px 0;">
 
 <div class="centered-message">
-    <#if isAdmin?? && isAdmin>
-        <div class="logout-container">
+    <div class="logout-container">
+        <#if isAdmin?? && isAdmin>
             <form action="/logout" method="post" style="display:inline;">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <button type="submit" class="logout-btn">Logout</button>
             </form>
-        </div>
-    </#if>
+        <#else>
+            <a href="/login" class="login-btn">Login</a>
+        </#if>
+    </div>
     <h1>Welcome to the LeafLogic!</h1>
     <p>${message}</p>
     <div class="home-buttons">
@@ -54,6 +98,11 @@
         <a href="/share-blob-page">
             <button class="home-button" style="margin-top: 30px;">Go to Share Blob Page</button>
         </a>
+        <#if isAdmin?? && isAdmin>
+            <a href="/admin-share-file-blob">
+                <button class="home-button" style="margin-top: 30px;">Admin Share File Blob</button>
+            </a>
+        </#if>
         <a href="/srt-translation-page">
             <button class="home-button" style="margin-top: 30px;">Go to SRT Translation</button>
         </a>

@@ -73,6 +73,10 @@ public final class StorageConstants {
      */
     public static final String SHARE_CONTAINER = "tasos-shared-container";
 
+    /**
+     * Container name for admin shared blob storage.
+     */
+    public static final String ADMIN_SHARE_CONTAINER = "admin-shared-container";
 
     /**
      * Default local storage directory name (relative to user home).
@@ -111,4 +115,3 @@ public final class StorageConstants {
         throw new AssertionError("Cannot instantiate StorageConstants utility class");
     }
 }
-

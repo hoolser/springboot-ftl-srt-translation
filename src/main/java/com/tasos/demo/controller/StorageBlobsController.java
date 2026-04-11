@@ -50,6 +50,13 @@ public class StorageBlobsController {
         return false;
     }
 
+    private boolean isAuthorizedForContainer(String containerName) {
+        if (StorageConstants.ADMIN_SHARE_CONTAINER.equals(containerName)) {
+            return isUserAdmin();
+        }
+        return true;
+    }
+
     @GetMapping("/test")
     public String test() {
         return "Hello World: "+ storageBlobsService.test();
@@ -81,6 +88,9 @@ public class StorageBlobsController {
         if (name == null || name.isEmpty()) {
             return "Container name cannot be null or empty.";
         }
+        if (!isAuthorizedForContainer(name)) {
+            return "Unauthorized access to container: " + name;
+        }
         return "File uploaded to container: "+ storageBlobsService.uploadTestFileToContainer(name);
     }
 
@@ -89,6 +99,9 @@ public class StorageBlobsController {
         logger.info("Listing files in container: {}", name);
         if (name == null || name.isEmpty()) {
             return "Container name cannot be null or empty.";
+        }
+        if (!isAuthorizedForContainer(name)) {
+            return "Unauthorized access to container: " + name;
         }
         List<String> fileNames = storageBlobsService.listFilesInContainer(name);
         return (fileNames!=null ? ("Files in container: "+ fileNames) : ("Container "+ name+" does not exist."));
@@ -105,6 +118,9 @@ public class StorageBlobsController {
         logger.info("Downloading blobs from container: {}", name);
         if (name == null || name.isEmpty()) {
             return ResponseEntity.badRequest().body("Container name cannot be null or empty.".getBytes());
+        }
+        if (!isAuthorizedForContainer(name)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(("Unauthorized access to container: " + name).getBytes());
         }
 
         List<byte[]> blobsData = storageBlobsService.downloadBlobsFromContainer(name);
@@ -188,6 +204,9 @@ public class StorageBlobsController {
         if (name == null || name.isEmpty()) {
             return "Container name cannot be null or empty.";
         }
+        if (!isAuthorizedForContainer(name)) {
+            return "Unauthorized access to container: " + name;
+        }
         String properties = storageBlobsService.readContainerProperties(name);
         return "properties of container: "+ properties;
     }
@@ -197,6 +216,9 @@ public class StorageBlobsController {
         logger.info("Add Container Properties for container: {}", name);
         if (name == null || name.isEmpty()) {
             return "Container name cannot be null or empty.";
+        }
+        if (!isAuthorizedForContainer(name)) {
+            return "Unauthorized access to container: " + name;
         }
         String strResponse = storageBlobsService.addContainerMetadata(name);
         return "response: "+ strResponse;
