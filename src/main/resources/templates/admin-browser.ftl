@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Folder Browser</title>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -18,10 +19,18 @@
         .lightbox { display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; }
         .lightbox.active { display: flex; }
         .lightbox-content { max-width: 90%; max-height: 90%; object-fit: contain; }
-        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); font-size: 40px; color: white; background: rgba(0,0,0,0.5); border: none; cursor: pointer; padding: 10px; z-index: 1001; }
-        .lightbox-nav.prev { left: 20px; }
-        .lightbox-nav.next { right: 20px; }
-        .lightbox-close { position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; background: none; border: none; cursor: pointer; z-index: 1001; }
+        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); font-size: 40px; color: white; background: rgba(0,0,0,0.5); border: none; cursor: pointer; padding: 15px; z-index: 1001; user-select: none; }
+        .lightbox-nav.prev { left: 10px; }
+        .lightbox-nav.next { right: 10px; }
+        .lightbox-close { position: absolute; top: 10px; right: 20px; font-size: 50px; color: white; background: none; border: none; cursor: pointer; z-index: 1001; user-select: none; padding: 10px; }
+
+        /* Mobile-friendly grid */
+        @media (max-width: 600px) {
+            .file-item { width: 45%; padding: 5px; }
+            .file-grid { justify-content: space-around; }
+            .browser-container { padding: 10px; }
+            .lightbox-nav { font-size: 30px; padding: 10px; }
+        }
     </style>
 </head>
 <body class="storage-page">
@@ -66,7 +75,7 @@
 
             <div class="file-item"
                  <#if isImage>
-                     ondblclick="openLightbox('${file.relativePath}')" title="Double click to preview"
+                     onclick="openLightbox('${file.relativePath}')" title="Click to preview"
                  <#else>
                      onclick="window.open('/admin/browser/file?path=${file.relativePath}', '_blank')"
                  </#if>
