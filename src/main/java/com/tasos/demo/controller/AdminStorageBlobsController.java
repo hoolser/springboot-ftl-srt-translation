@@ -27,6 +27,11 @@ public class AdminStorageBlobsController {
         this.storageBlobsService = storageBlobsService;
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
     @GetMapping("/listFilesOfShared")
     public String listFilesOfShared() {
         List<String> fileNames = storageBlobsService.listFilesInContainer(StorageConstants.ADMIN_SHARE_CONTAINER);

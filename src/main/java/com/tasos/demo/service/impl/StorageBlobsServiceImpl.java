@@ -154,11 +154,16 @@ public class StorageBlobsServiceImpl implements StorageBlobsService {
                 return null;
             }
 
-            File[] files = directoryPath.toFile().listFiles(File::isFile);
+            File[] files = directoryPath.toFile().listFiles();
             if (files != null) {
                 for (File file : files) {
-                    logger.info("Found file: {}", file.getName());
-                    fileNames.add(file.getName());
+                    if (file.isDirectory()) {
+                        logger.info("Found directory: {}", file.getName());
+                        fileNames.add(file.getName() + " (Folder)");
+                    } else {
+                        logger.info("Found file: {}", file.getName());
+                        fileNames.add(file.getName());
+                    }
                 }
             }
         } catch (Exception e) {
@@ -293,17 +298,30 @@ public class StorageBlobsServiceImpl implements StorageBlobsService {
                 return null;
             }
 
-            Path filePath = directoryPath.resolve(fileName).normalize();
+            // Remove the " (Folder)" suffix if user tries to download it exactly as listed
+            String sanitizedFileName = fileName;
+            if (sanitizedFileName.endsWith(" (Folder)")) {
+                sanitizedFileName = sanitizedFileName.substring(0, sanitizedFileName.length() - 9);
+            }
+
+            Path filePath = directoryPath.resolve(sanitizedFileName).normalize();
             validateDirectoryPath(filePath.getParent());
 
             if (!Files.exists(filePath)) {
-                logger.error("File '{}' does not exist in directory '{}'.", fileName, container);
+                logger.error("File '{}' does not exist in directory '{}'.", sanitizedFileName, container);
                 return null;
             }
 
+            if (Files.isDirectory(filePath)) {
+                logger.error("Cannot download directory '{}' as a file.", sanitizedFileName);
+                throw new IllegalArgumentException("Cannot download a directory. Please select a file.");
+            }
+
             byte[] data = Files.readAllBytes(filePath);
-            logger.info("File '{}' downloaded from directory '{}'.", fileName, container);
+            logger.info("File '{}' downloaded from directory '{}'.", sanitizedFileName, container);
             return data;
+        } catch (IllegalArgumentException e) {
+            throw e;
         } catch (Exception e) {
             logger.error("Failed to download file from directory", e);
             return null;
@@ -405,6 +423,11 @@ public class StorageBlobsServiceImpl implements StorageBlobsService {
             }
 
             String lowerName = fileName.toLowerCase();
+
+            // Validate extension before attempting extraction
+            if (!lowerName.endsWith(".zip") && !lowerName.endsWith(".tar") && !lowerName.endsWith(".tar.gz") && !lowerName.endsWith(".tgz")) {
+                return "Unsupported archive format: " + fileName + ". Please provide a .zip, .tar, .tar.gz, or .tgz file.";
+            }
 
             // Determine extraction folder name based on archive name
             String folderName = fileName;
