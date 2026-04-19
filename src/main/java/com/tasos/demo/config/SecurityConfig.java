@@ -41,7 +41,7 @@ public class SecurityConfig {
                                 // Error pages must be accessible without authentication
                                 .requestMatchers("/error", "/error/**").permitAll()
                                 // Only SRT translation endpoints and Admin storage require ADMIN role
-                                .requestMatchers("/api/srt/translation/**", "/srt-translation-page", "/api/admin/storage/blobs/**", "/admin-share-file-blob", "/admin/browser/**").hasRole("ADMIN")
+                                .requestMatchers("/api/srt/translation/**", "/srt-translation-page", "/api/admin/storage/blobs/**", "/admin-share-file-blob", "/admin/browser/**", "/admin-email/**").hasRole("ADMIN")
                                 // Opensearch endpoints
                                 .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/courses/**").hasRole("ADMIN")
                                 .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/courses/**").hasRole("ADMIN")
