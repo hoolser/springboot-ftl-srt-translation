@@ -2,6 +2,12 @@
 
 A user-friendly web application for translating SRT subtitle files from English to Greek using DeepL or Azure Translator services. Simply upload your SRT file, and get your translated subtitles ready to download!
 
+## 🌐 Live Demo
+
+You can check out the live application deployed on an Oracle Cloud VM here: 
+
+### 🚀 [https://leaflogic.xyz/](https://leaflogic.xyz/)
+
 ## Features
 
 -   **Easy-to-use Web Interface**: Drag-and-drop or click to upload SRT files
@@ -46,6 +52,12 @@ The application uses secure authentication to protect admin features.
 Set these in your `application.properties` file or as environment variables:
 - `app.security.username` – Admin username
 - `app.security.password` – Admin password
+
+## 🔍 OpenSearch Integration
+
+The application features a robust OpenSearch integration hosted on a separate, dedicated Oracle Cloud VM. This remote architecture provides:
+- **Live Data Searching**: Search (e.g., courses) using OpenSearch native indexing.
+- **Centralized Logging**: Application and Tomcat access logs are efficiently shipped to OpenSearch in real-time via **Fluent Bit**.
 
 ## 🖥️ How to Use the Application
 
@@ -169,29 +181,39 @@ src
       ├── java/com/tasos/demo
       │    ├── TasosApplication.java
       │    ├── config/
+      │    │   ├── GlobalExceptionHandler.java
       │    │   ├── LocaleConfig.java
+      │    │   ├── SecurityConfig.java
       │    │   └── StorageConstants.java
       │    ├── controller/
+      │    │   ├── AdminBrowserController.java
       │    │   ├── HomeController.java
-      │    │   ├── LanguageController.java
+      │    │   ├── LoginController.java
       │    │   ├── SrtTranslationController.java
       │    │   └── StorageBlobsController.java
       │    ├── model/
+      │    │   ├── FileItem.java
       │    │   └── SrtSubtitle.java
-      │    ├── service/
+      │    ├── opensearch/
+      │    │   ├── Course.java
+      │    │   ├── CourseController.java
       │    │   ├── CourseService.java
-      │    │   ├── MessageService.java
+      │    │   └── OpenSearchConfig.java
+      │    ├── service/
+      │    │   ├── AdminBrowserService.java
       │    │   ├── SrtTranslationService.java
       │    │   ├── StorageBlobsService.java
       │    │   └── impl/
+      │    │       ├── AdminBrowserServiceImpl.java
       │    │       ├── SrtTranslationServiceImpl.java
       │    │       └── StorageBlobsServiceImpl.java
       │    └── util/
       │        └── SrtParser.java
       └── resources
-           ├── templates/ [Freemarker .ftl files]
-           ├── static/ [CSS, JS, images]
-           ├── messages/ [i18n properties]
+           ├── templates/         [Freemarker .ftl files (UI, Map, Admin panels)]
+           ├── static/css/        [Stylesheets (admin, dark-mode, etc.)]
+           ├── static/js/         [Frontend Logic]
+           ├── messages/          [i18n properties]
            └── application.properties
 ```
 

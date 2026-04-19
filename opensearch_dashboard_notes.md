@@ -96,7 +96,7 @@ sudo systemctl start fluent-bit
 
 ---
 
-## Viewing Logs & Geolocation in OpenSearch Dashboards
+## Viewing Logs in OpenSearch Dashboards
 
 With Fluent Bit active on Ubuntu, **OpenSearch Dashboards** will now receive logs automatically!
 
