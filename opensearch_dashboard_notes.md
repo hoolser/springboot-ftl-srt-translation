@@ -11,51 +11,81 @@ curl https://raw.githubusercontent.com/fluent/fluent-bit/master/install.sh | sh
 Replace the default config to tell Fluent Bit to read logs and send them to OpenSearch:
 
 ```ini
+sudo tee /etc/fluent-bit/fluent-bit.conf << 'EOF'
 [SERVICE]
     Flush        1
     Log_Level    info
     Parsers_File parsers.conf
 
 [INPUT]
-    Name         tail
-    Path         /home/*/demoProjectLogs/tasosApp.json
-    Tag          springboot_logs
-    Parser       json
-    Mem_Buf_Limit 5MB
-    Read_from_Head On
+    Name              tail
+    Path              /home/*/demoProjectLogs/tasosApp.json
+    Tag               springboot_logs
+    Parser            json
+    Mem_Buf_Limit     5MB
+    Read_from_Head    On
 
 [INPUT]
-    Name         tail
-    Path         /home/*/demoProjectLogs/access_log*.log
-    Tag          tomcat_access
-    Mem_Buf_Limit 5MB
-    Read_from_Head On
+    Name              tail
+    Path              /home/*/demoProjectLogs/access_log*.log
+    Tag               tomcat_access
+    Parser            tomcat_access_parser
+    Mem_Buf_Limit     5MB
+    Read_from_Head    On
+
+[FILTER]
+    Name              record_modifier
+    Match             tomcat_access
+    Record            traffic_type human
 
 [OUTPUT]
-    Name            opensearch
-    Match           springboot_logs
-    Host            10.0.0.71
-    Port            9200
-    HTTP_User       admin
-    HTTP_Passwd     admin
-    Logstash_Format     On
-    Logstash_Prefix     springboot-app-logs
-    tls             On
-    tls.verify      Off
+    Name              opensearch
+    Match             springboot_logs
+    Host              10.0.0.71
+    Port              9200
+    HTTP_User         admin
+    HTTP_Passwd       YOUR_PASSWORD
+    Logstash_Format   On
+    Logstash_Prefix   springboot-logs
+    tls               On
+    tls.verify        Off
     Suppress_Type_Name On
+    Retry_Limit       False
 
 [OUTPUT]
-    Name            opensearch
-    Match           tomcat_access
-    Host            10.0.0.71
-    Port            9200
-    HTTP_User       admin
-    HTTP_Passwd     admin
-    Logstash_Format     On
-    Logstash_Prefix     tomcat-access-logs
-    tls             On
-    tls.verify      Off
+    Name              opensearch
+    Match             tomcat_access
+    Host              10.0.0.71
+    Port              9200
+    HTTP_User         admin
+    HTTP_Passwd       YOUR_PASSWORD
+    Logstash_Format   On
+    Logstash_Prefix   tomcat-access-logs
+    tls               On
+    tls.verify        Off
     Suppress_Type_Name On
+    Retry_Limit       False
+EOF
+```
+
+2.1 **Add the parser (`/etc/fluent-bit/parsers.conf`):**
+
+```ini
+sudo tee /etc/fluent-bit/parsers.conf << 'EOF'
+[PARSER]
+    Name        json
+    Format      json
+    Time_Key    @timestamp
+    Time_Format %Y-%m-%dT%H:%M:%S.%LZ
+
+[PARSER]
+    Name        tomcat_access_parser
+    Format      regex
+    Regex       ^(?<client_ip>[^ ]+) [^ ]+ [^ ]+ \[(?<request_time>[^\]]+)\] "(?<method>\w+) (?<request_path>[^ ]+) HTTP/[0-9.]+" (?<status_code>[0-9]+) (?:%{NUMBER:bytes_sent}|-) (?<response_time_ms>[0-9]+) "(?<referer>[^"]*)" "(?<user_agent>[^"]*)"
+    Time_Key    request_time
+    Time_Format %d/%b/%Y:%H:%M:%S %z
+    Types       status_code:integer response_time_ms:integer
+EOF
 ```
 
 3. **Start the Service:**
