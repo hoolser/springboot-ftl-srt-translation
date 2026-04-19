@@ -30,7 +30,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf
                         // Disable CSRF for blob storage endpoints (they don't require authentication)
-                        .ignoringRequestMatchers("/api/storage/blobs/**", "/api/admin/storage/blobs/**")
+                        .ignoringRequestMatchers("/api/storage/blobs/**", "/api/admin/storage/blobs/**", "/api/courses/**")
                 )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
@@ -42,6 +42,9 @@ public class SecurityConfig {
                                 .requestMatchers("/error", "/error/**").permitAll()
                                 // Only SRT translation endpoints and Admin storage require ADMIN role
                                 .requestMatchers("/api/srt/translation/**", "/srt-translation-page", "/api/admin/storage/blobs/**", "/admin-share-file-blob", "/admin/browser/**").hasRole("ADMIN")
+                                // Opensearch endpoints
+                                .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/courses/**").hasRole("ADMIN")
+                                .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/courses/**").hasRole("ADMIN")
                                 // All other endpoints are accessible without authentication
                                 .anyRequest().permitAll()
                 )

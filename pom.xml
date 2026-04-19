@@ -54,6 +54,23 @@
             <version>1.14.0</version>
         </dependency>
 
+            <!-- OpenSearch -->
+        <dependency>
+            <groupId>org.opensearch.client</groupId>
+            <artifactId>opensearch-java</artifactId>
+            <version>2.19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opensearch.client</groupId>
+            <artifactId>opensearch-rest-client</artifactId>
+            <version>2.19.0</version>
+        </dependency>
+        <!-- Logstash logback encoder -->
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>8.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -65,3 +82,4 @@
         </plugins>
     </build>
 </project>
+
