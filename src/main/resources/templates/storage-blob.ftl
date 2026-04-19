@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-bs-theme="dark">
 <head>
   <title>Storage Blobs Management</title>
   <link rel="stylesheet" href="/css/styles.css">

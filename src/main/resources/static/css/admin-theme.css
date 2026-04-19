@@ -1,24 +1,24 @@
 /* Admin theme overrides */
 hr {
-  background-color: #d35400 !important;
+  background-color: #e74c3c !important; /* Bright admin red instead of green */
 }
 .home-button {
-  background-color: #d35400 !important;
+  background-color: #c0392b !important;
 }
 .home-button:hover {
-  background-color: #e67e22 !important;
+  background-color: #e74c3c !important;
 }
 .storage-button {
-  background-color: #2c3e50 !important;
-  border-color: #2c3e50 !important;
+  background-color: #c0392b !important;
+  border-color: #c0392b !important;
+  color: white !important;
 }
 .storage-button:hover {
-  background-color: #34495e !important;
+  background-color: #e74c3c !important;
 }
 h1, .storage-title {
-  color: #d35400 !important;
+  color: #e74c3c !important;
 }
 .storage-container {
-  border-top: 4px solid #2c3e50 !important;
+  border-top: 4px solid #c0392b !important;
 }
-

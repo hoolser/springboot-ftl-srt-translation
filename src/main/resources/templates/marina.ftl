@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-bs-theme="dark">
 <head>
   <title>Marina Page</title>
   <link rel="stylesheet" href="/css/styles.css">
@@ -46,3 +46,4 @@
 </script>
 </body>
 </html>
+

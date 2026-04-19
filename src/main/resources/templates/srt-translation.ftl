@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-bs-theme="dark">
 <head>
   <title>SRT Subtitle Translation</title>
   <meta name="_csrf" content="${_csrf.token}"/>
@@ -679,4 +679,5 @@
 
 </body>
 </html>
+
 

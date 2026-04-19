@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-bs-theme="dark">
 <head>
     <title>LeafLogic Landing Page</title>
     <meta name="_csrf" content="${_csrf.token}"/>

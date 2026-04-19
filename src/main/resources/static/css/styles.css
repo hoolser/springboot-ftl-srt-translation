@@ -1,4 +1,16 @@
 /*Home's page specific styles */
+body {
+    background-color: #212529 !important; /* Lighter dark theme instead of pure black */
+    color: #e9ecef !important;
+}
+
+a {
+    color: #4da3ff;
+}
+a:hover {
+    color: #80bfff;
+}
+
 .home-buttons {
     display: flex;
     flex-direction: column;
@@ -36,11 +48,18 @@
     padding: 20px;
 }
 
+[data-bs-theme="dark"] body {
+    background-color: #212529; /* Match body dark theme */
+    color: #e9ecef;
+}
+
 .storage-container {
-    border: 1px solid #ddd;
+    border: 1px solid #495057;
     padding: 20px;
     border-radius: 5px;
     margin-bottom: 20px;
+    background-color: #2b3035; /* Slightly lighter card background */
+    color: #fff;
 }
 
 .storage-form-group {
@@ -57,7 +76,9 @@
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
-    border: 1px solid #ccc;
+    border: 1px solid #495057;
+    background-color: #343a40;
+    color: #fff;
     border-radius: 4px;
 }
 
@@ -88,8 +109,9 @@
 .storage-response {
     margin-top: 20px;
     padding: 15px;
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
+    background-color: #2b3035; /* Consistent panel dark */
+    border: 1px solid #495057;
+    color: #00ff00;
     border-radius: 4px;
     min-height: 100px;
 }

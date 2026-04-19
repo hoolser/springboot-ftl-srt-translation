@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-bs-theme="dark">
 <head>
     <title>Login - SRT Translation App</title>
     <link rel="stylesheet" href="/css/styles.css">
@@ -9,14 +9,15 @@
             max-width: 400px;
             margin: 100px auto;
             padding: 30px;
-            background-color: #f5f5f5;
+            background-color: #2b3035; /* Bootstrap dark slightly elevated background */
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #495057;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
         .login-container h1 {
             text-align: center;
-            color: #2c3e50;
+            color: #e9ecef;
             margin-bottom: 30px;
             font-size: 24px;
         }
@@ -28,7 +29,7 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #333;
+            color: #dee2e6;
             font-weight: bold;
             font-size: 14px;
         }
@@ -36,7 +37,9 @@
         .form-group input {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid #495057;
+            background-color: #212529;
+            color: #e9ecef;
             border-radius: 4px;
             font-size: 14px;
             box-sizing: border-box;
@@ -46,7 +49,9 @@
         .form-group input:focus {
             outline: none;
             border-color: #3498db;
-            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+            background-color: #2b3035;
+            color: #fff;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
         }
 
         .login-btn {
@@ -67,9 +72,9 @@
         }
 
         .error-message {
-            background-color: #fadbd8;
+            background-color: #442726; /* Dark mode error reddish tint */
             border-left: 4px solid #e74c3c;
-            color: #c0392b;
+            color: #ff9999;
             padding: 12px;
             margin-bottom: 20px;
             border-radius: 4px;
@@ -77,9 +82,9 @@
         }
 
         .info-message {
-            background-color: #e8f4f8;
+            background-color: #1c3242; /* Dark mode blueish tint */
             border-left: 4px solid #3498db;
-            color: #2c3e50;
+            color: #99ccff;
             padding: 12px;
             margin-bottom: 20px;
             border-radius: 4px;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-bs-theme="dark">
 <head>
   <title>Admin Share File Blob</title>
   <link rel="stylesheet" href="/css/styles.css">
@@ -14,7 +14,7 @@
       <img src="/images/logo2-shrunk.webp" alt="Logo" style="max-width:400px; height: auto;">
   </a>
 </div>
-<hr style="border: none; height: 2px; background-color: #28a745; margin: 20px 0;">
+<hr style="border: none; height: 2px; background-color: #e74c3c; margin: 20px 0;">
 
 <div style="text-align: left; margin-bottom: 20px;">
   <a href="/">
@@ -74,7 +74,7 @@
   </div>
   <div class="storage-form-group">
     <label for="shareLink">Generated share link:</label>
-    <input class="storage-input" type="text" id="shareLink" readonly style="width: 80%; background-color: #f0f0f0;">
+    <input class="storage-input" type="text" id="shareLink" readonly style="width: 80%; background-color: #2b3035; color: #fff;">
   </div>
   <button class="storage-button" type="button" onclick="generateShareLink()">Generate Share Link</button>
 </div>
@@ -86,4 +86,5 @@
 
 </body>
 </html>
+
 
