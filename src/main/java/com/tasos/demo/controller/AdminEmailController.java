@@ -36,5 +36,27 @@ public class AdminEmailController {
         }
         return "redirect:/admin-email";
     }
+
+    @GetMapping("/admin-contact")
+    public String showContactPage(Model model) {
+        model.addAttribute("title", "Admin Contact");
+        return "admin-contact";
+    }
+
+    @PostMapping("/admin-contact/send")
+    public String sendContact(@RequestParam("userEmail") String userEmail,
+                              @RequestParam("subject") String subject,
+                              @RequestParam("message") String message,
+                              RedirectAttributes redirectAttributes) {
+        try {
+            // Hardcode the verified SMTP sender for internal notifications
+            String systemSender = "noreply@leaflogic.xyz";
+            emailService.sendContactEmail(userEmail, subject, message, systemSender);
+            redirectAttributes.addFlashAttribute("successMessage", "Contact form successfully sent to system auditor.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to send contact message: " + e.getMessage());
+        }
+        return "redirect:/admin-contact";
+    }
 }
 

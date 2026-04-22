@@ -58,6 +58,7 @@ public class HomeController {
     public String storageBlob(Model model) {
         logger.info("Start HomeController.storage-blob");
         model.addAttribute("message", messageService.getMessageForBlob());
+        model.addAttribute("isAdmin", isUserAdmin());
         logger.info("End HomeController.storage-blob");
         return "storage-blob";
     }
@@ -66,6 +67,7 @@ public class HomeController {
     public String shareBlob(Model model) {
         logger.info("Start HomeController.shareBlob");
         model.addAttribute("message", messageService.getMessageForShareBlob());
+        model.addAttribute("isAdmin", isUserAdmin());
         logger.info("End HomeController.shareBlob");
         return "share-file-blob";
     }
@@ -74,6 +76,7 @@ public class HomeController {
     public String srtTranslation(Model model) {
         logger.info("Start HomeController.srtTranslation");
         model.addAttribute("message", messageService.getMessage());
+        model.addAttribute("isAdmin", isUserAdmin());
         logger.info("End HomeController.srtTranslation");
         return "srt-translation";
     }
@@ -84,7 +87,8 @@ public class HomeController {
     }
 
     @GetMapping("/admin-share-file-blob")
-    public String adminShareFileBlob() {
+    public String adminShareFileBlob(Model model) {
+        model.addAttribute("isAdmin", isUserAdmin());
         return "admin-share-file-blob";
     }
 
