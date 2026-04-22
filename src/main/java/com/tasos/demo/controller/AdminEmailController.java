@@ -2,6 +2,7 @@ package com.tasos.demo.controller;
 
 import com.tasos.demo.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +16,13 @@ public class AdminEmailController {
     @Autowired
     private EmailService emailService;
 
+    @Value("${app.email.system.sender:}")
+    private String systemSender;
+
     @GetMapping("/admin-email")
     public String showEmailPage(Model model) {
         model.addAttribute("title", "Admin Email Tester");
+        model.addAttribute("isAdmin", true);
         return "admin-email";
     }
 
@@ -40,6 +45,7 @@ public class AdminEmailController {
     @GetMapping("/admin-contact")
     public String showContactPage(Model model) {
         model.addAttribute("title", "Admin Contact");
+        model.addAttribute("isAdmin", true);
         return "admin-contact";
     }
 
@@ -49,8 +55,7 @@ public class AdminEmailController {
                               @RequestParam("message") String message,
                               RedirectAttributes redirectAttributes) {
         try {
-            // Hardcode the verified SMTP sender for internal notifications
-            String systemSender = "noreply@leaflogic.xyz";
+            // Use the verified SMTP sender for internal notifications via application properties
             emailService.sendContactEmail(userEmail, subject, message, systemSender);
             redirectAttributes.addFlashAttribute("successMessage", "Contact form successfully sent to system auditor.");
         } catch (Exception e) {
