@@ -85,6 +85,8 @@ This is a test email sent from the leaflogic.xyz admin panel!</textarea>
     </div>
 </div>
 
+<#include "footer.ftl">
 </body>
 </html>
+
 

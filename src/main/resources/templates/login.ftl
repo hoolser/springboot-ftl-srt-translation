@@ -144,6 +144,8 @@
         <a href="/">← Back to Home</a>
     </div>
 </div>
+<#include "footer.ftl">
 </body>
 </html>
+
 

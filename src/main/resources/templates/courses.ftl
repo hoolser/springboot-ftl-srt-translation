@@ -27,6 +27,10 @@
 <hr style="border: none; height: 2px; background-color: #28a745; margin: 20px 0;">
 
 <div class="container">
+    <div class="mb-3">
+        <a href="/" class="btn btn-outline-secondary">&larr; Back to Home Page</a>
+    </div>
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Courses</h1>
         <div>
@@ -221,7 +225,9 @@
     }
 </script>
 
+<#include "footer.ftl">
 </body>
 </html>
+
 
 

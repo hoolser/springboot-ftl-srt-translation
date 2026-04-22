@@ -84,7 +84,9 @@
   <button class="storage-button" type="button" id="clearButton">Clear All Files</button>
 </div>
 
+<#include "footer.ftl">
 </body>
 </html>
+
 
 

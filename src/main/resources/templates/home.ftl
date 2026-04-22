@@ -117,5 +117,7 @@
         </a>
     </div>
 </div>
+<#include "footer.ftl">
 </body>
 </html>
+

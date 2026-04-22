@@ -677,7 +677,9 @@
   });
 </script>
 
+<#include "footer.ftl">
 </body>
 </html>
+
 
 

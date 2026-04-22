@@ -1,0 +1,3 @@
+<footer style="text-align: center; margin-top: 50px; padding: 20px; font-size: 0.9em; color: #6c757d;">
+    &copy; 2026 Anastasios Tsoukas. All rights reserved.
+</footer>
