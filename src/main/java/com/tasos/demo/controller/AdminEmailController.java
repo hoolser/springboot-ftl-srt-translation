@@ -1,6 +1,8 @@
 package com.tasos.demo.controller;
 
+import com.tasos.demo.opensearch.ContactAuditService;
 import com.tasos.demo.service.EmailService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,9 @@ public class AdminEmailController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired(required = false)
+    private ContactAuditService contactAuditService;
 
     @Value("${app.email.system.sender:}")
     private String systemSender;
@@ -53,8 +58,26 @@ public class AdminEmailController {
     public String sendContact(@RequestParam("userEmail") String userEmail,
                               @RequestParam("subject") String subject,
                               @RequestParam("message") String message,
+                              HttpServletRequest request,
                               RedirectAttributes redirectAttributes) {
         try {
+            // Check IP limit
+            if (contactAuditService == null) {
+                throw new RuntimeException("Contact service is disabled (OpenSearch not enabled).");
+            }
+
+            // Get accurate IP depending on proxies
+            String ipAddress = request.getHeader("X-Forwarded-For");
+            if (ipAddress == null || ipAddress.isEmpty()) {
+                ipAddress = request.getRemoteAddr();
+            } else {
+                // Takes the first IP from potentially comma-separated list
+                ipAddress = ipAddress.split(",")[0].trim();
+            }
+
+            // Verify or record this hit. Exception thrown if > 2 hits
+            contactAuditService.validateAndRecordIp(ipAddress);
+
             // Use the verified SMTP sender for internal notifications via application properties
             emailService.sendContactEmail(userEmail, subject, message, systemSender);
             redirectAttributes.addFlashAttribute("successMessage", "Contact form successfully sent to system auditor.");
