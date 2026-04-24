@@ -164,3 +164,59 @@ With Fluent Bit active on Ubuntu, **OpenSearch Dashboards** will now receive log
 ### Real Client IP
 
 Because of the framework properties added in `application.properties` (`server.forward-headers-strategy=framework` alongside `RemoteIpValve`), Tomcat inherently strips the `127.0.0.1` reverse-proxy Nginx IP natively on the server level, permanently ensuring your Spring Logs *and* your Tomcat access logs print the actual remote client IP from the `X-Forwarded-For` header. OpenSearch natively turns this IP into Lat/Long map coordinates inside Dashboards via the ingest pipeline.
+
+---
+
+## Keeping the OpenSearch GeoIP Database Up to Date
+
+The GeoIP database bundled with OpenSearch is static and does not auto-update. To keep it fresh, a monthly cron job runs on the **OpenSearch VM** on the 2nd of every month at 3AM.
+
+### Setup (run once on the OpenSearch VM)
+
+**Step 1 — Install cron:**
+```bash
+sudo apt-get install -y cron
+sudo systemctl enable cron
+sudo systemctl start cron
+```
+
+**Step 2 — Create the update script:**
+```bash
+sudo tee /usr/local/bin/update-geoip.sh << 'EOF'
+#!/bin/bash
+KEY="YOUR_MAXMIND_LICENSE_KEY"
+BASE="https://download.maxmind.com/app/geoip_download"
+DIR="/usr/share/opensearch/modules/ingest-geoip"
+
+wget -q -O /tmp/GeoLite2-City.tar.gz "$BASE?edition_id=GeoLite2-City&license_key=$KEY&suffix=tar.gz"
+wget -q -O /tmp/GeoLite2-Country.tar.gz "$BASE?edition_id=GeoLite2-Country&license_key=$KEY&suffix=tar.gz"
+wget -q -O /tmp/GeoLite2-ASN.tar.gz "$BASE?edition_id=GeoLite2-ASN&license_key=$KEY&suffix=tar.gz"
+
+tar -xzf /tmp/GeoLite2-City.tar.gz -C /tmp/
+tar -xzf /tmp/GeoLite2-Country.tar.gz -C /tmp/
+tar -xzf /tmp/GeoLite2-ASN.tar.gz -C /tmp/
+
+cp /tmp/GeoLite2-City_*/GeoLite2-City.mmdb $DIR/GeoLite2-City.mmdb
+cp /tmp/GeoLite2-Country_*/GeoLite2-Country.mmdb $DIR/GeoLite2-Country.mmdb
+cp /tmp/GeoLite2-ASN_*/GeoLite2-ASN.mmdb $DIR/GeoLite2-ASN.mmdb
+
+systemctl restart opensearch
+EOF
+
+sudo chmod +x /usr/local/bin/update-geoip.sh
+```
+
+**Step 3 — Register the cron job:**
+```bash
+(sudo crontab -l 2>/dev/null; echo '0 3 2 * * /usr/local/bin/update-geoip.sh') | sudo crontab -
+
+# Verify
+sudo crontab -l
+```
+
+The cron schedule `0 3 2 * *` runs at **3:00 AM on the 2nd of every month**. OpenSearch will be unavailable for ~1-2 minutes during the restart — acceptable for a monthly off-peak maintenance window.
+
+### To run manually at any time:
+```bash
+sudo /usr/local/bin/update-geoip.sh
+```
