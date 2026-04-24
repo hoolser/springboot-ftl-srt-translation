@@ -1,5 +1,8 @@
 ## Setting up Fluent Bit (100% Open Source) on Ubuntu VM
 
+![OpenSearch Dashboard](z-fluent-bit-config-files/dashboard-test-img.png)
+*Example OpenSearch Dashboard visualizing application and access logs with GeoIP.*
+
 Because Elastic changed their license to a non-open-source model for versions 7.11+, the industry standard for OpenSearch is to use **Fluent Bit** (a CNCF graduated project under Apache 2.0 license).
 
 ### 1. Install Fluent Bit

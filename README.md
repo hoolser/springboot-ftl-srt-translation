@@ -55,9 +55,14 @@ Set these in your `application.properties` file or as environment variables:
 
 ## 🔍 OpenSearch Integration
 
+![OpenSearch Dashboard](z-fluent-bit-config-files/dashboard-test-img.png)
+*Example OpenSearch Dashboard visualizing application and access logs with GeoIP.*
+
 The application features a robust OpenSearch integration hosted on a separate, dedicated Oracle Cloud VM. This remote architecture provides:
 - **Live Data Searching**: Search (e.g., courses) using OpenSearch native indexing.
 - **Centralized Logging**: Application and Tomcat access logs are efficiently shipped to OpenSearch in real-time via **Fluent Bit**.
+
+For detailed setup instructions on OpenSearch and Fluent Bit, please refer to the [OpenSearch & Fluent Bit Setup Guide](opensearch_FLUENT_BIT_SETUP_notes.md).
 
 ## 🖥️ How to Use the Application
 
@@ -246,7 +251,8 @@ src
 - **DeepL API** - Translation service
 - **Azure Translator API** - Translation service
 - **Maven** - Build tool
-
+- **OpenSearch** - Search and analytics engine
+- **Fluent Bit** - Log processor and forwarder
 
 ## 📝 License
 
