@@ -2,11 +2,11 @@
 
 A user-friendly web application for translating SRT subtitle files from English to Greek using DeepL or Azure Translator services. Simply upload your SRT file, and get your translated subtitles ready to download!
 
-## 🌐 Live Demo
+##  Live Demo
 
 You can check out the live application deployed on an Oracle Cloud VM here: 
 
-### 🚀 [https://leaflogic.xyz/](https://leaflogic.xyz/)
+###  [https://leaflogic.xyz/](https://leaflogic.xyz/)
 
 ## Features
 
@@ -38,7 +38,7 @@ You can check out the live application deployed on an Oracle Cloud VM here:
 -   Free tier: 2 requests/second.
 -   Standard tier: 10 requests/second.
 
-## 🔐 Security
+##  Security
 
 The application uses secure authentication to protect admin features. 
 
@@ -53,7 +53,7 @@ Set these in your `application.properties` file or as environment variables:
 - `app.security.username` – Admin username
 - `app.security.password` – Admin password
 
-## 🔍 OpenSearch Integration
+##  OpenSearch Integration
 
 ![OpenSearch Dashboard](z-fluent-bit-config-files/dashboard-test-img.png)
 *Example OpenSearch Dashboard visualizing application and access logs with GeoIP.*
@@ -64,7 +64,7 @@ The application features a robust OpenSearch integration hosted on a separate, d
 
 For detailed setup instructions on OpenSearch and Fluent Bit, please refer to the [OpenSearch & Fluent Bit Setup Guide](opensearch_FLUENT_BIT_SETUP_notes.md).
 
-## 🖥️ How to Use the Application
+## ️ How to Use the Application
 
 Once the application is running at [http://localhost:8080](http://localhost:8080), you'll see the main landing page with several options:
 
@@ -93,7 +93,7 @@ Click the **"Go to Storage Blob Management"** button to manage files stored in A
 ### 3. **Share Blob Page** 
 Click the **"Go to Share Blob Page"** button to access shared file management for collaborative workflows.
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - Java 21 or later
@@ -178,7 +178,7 @@ Before you can run the application, you need to set up credentials with your cho
 5. **Open in your browser:**
    Navigate to [http://localhost:8080](http://localhost:8080) and start translating!
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 src
@@ -232,7 +232,7 @@ src
 - **StorageBlobsService**: Manages file storage (locally)
 - **Templates**: Freemarker templates for web UI
 
-## 🔄 Translation Workflow
+##  Translation Workflow
 
 1. User uploads an SRT file via the web interface
 2. Application parses the SRT file into subtitle objects
@@ -241,7 +241,7 @@ src
 5. Translations are collected and reassembled into a new SRT file
 6. Translated file is returned to the user for download
 
-## 🛠️ Development
+## ️ Development
 
 ### Technologies Used
 
@@ -254,7 +254,7 @@ src
 - **OpenSearch** - Search and analytics engine
 - **Fluent Bit** - Log processor and forwarder
 
-## 📝 License
+##  License
 
 This project is licensed under the **GNU Affero General Public License v3.0** - see the [LICENSE](LICENSE) file for details.
 

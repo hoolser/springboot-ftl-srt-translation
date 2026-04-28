@@ -1,19 +1,19 @@
 package com.tasos.demo.opensearch;
 
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.TrustAllStrategy;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.opensearch.client.RestClient;
-import org.opensearch.client.RestClientBuilder;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.ClientTlsStrategyBuilder;
+import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
+import org.apache.hc.client5.http.ssl.TrustAllStrategy;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.nio.ssl.TlsStrategy;
+import org.apache.hc.core5.ssl.SSLContextBuilder;
 import org.opensearch.client.json.jackson.JacksonJsonpMapper;
 import org.opensearch.client.opensearch.OpenSearchClient;
-import org.opensearch.client.transport.OpenSearchTransport;
-import org.opensearch.client.transport.rest_client.RestClientTransport;
+import org.opensearch.client.transport.httpclient5.ApacheHttpClient5Transport;
+import org.opensearch.client.transport.httpclient5.ApacheHttpClient5TransportBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -45,23 +45,32 @@ public class OpenSearchConfig {
 
     @Bean
     public OpenSearchClient openSearchClient() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
-        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials(username, password));
+        final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(new AuthScope(host, port),
+                new UsernamePasswordCredentials(username, password.toCharArray()));
 
         // Skip SSL cert verification since it's an internal VM with likely self-signed cert
         SSLContext sslContext = SSLContextBuilder.create()
                 .loadTrustMaterial(new TrustAllStrategy())
                 .build();
 
-        RestClientBuilder builder = RestClient.builder(new HttpHost(host, port, scheme))
+        final TlsStrategy tlsStrategy = ClientTlsStrategyBuilder.create()
+                .setSslContext(sslContext)
+                .setHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                .build();
+
+        ApacheHttpClient5Transport transport = ApacheHttpClient5TransportBuilder
+                .builder(new HttpHost(scheme, host, port))
+                .setMapper(new JacksonJsonpMapper())
                 .setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder
                         .setDefaultCredentialsProvider(credentialsProvider)
-                        .setSSLContext(sslContext)
-                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE));
-
-        RestClient restClient = builder.build();
-        OpenSearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
+                        .setConnectionManager(
+                                PoolingAsyncClientConnectionManagerBuilder.create()
+                                        .setTlsStrategy(tlsStrategy)
+                                        .build()
+                        )
+                )
+                .build();
 
         return new OpenSearchClient(transport);
     }
