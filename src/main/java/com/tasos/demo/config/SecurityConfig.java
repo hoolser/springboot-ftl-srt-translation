@@ -79,12 +79,24 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
+    public UserDetailsService userDetailsService(LoginAttemptService loginAttemptService) {
+        UserDetails adminUser = User.withDefaultPasswordEncoder()
                 .username(username)
                 .password(password)
                 .roles("ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(user);
+        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager(adminUser);
+
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) throws org.springframework.security.core.userdetails.UsernameNotFoundException {
+                UserDetails userDetails = manager.loadUserByUsername(username);
+                boolean isBlocked = loginAttemptService.isBlocked(username);
+
+                return User.withUserDetails(userDetails)
+                        .accountLocked(isBlocked)
+                        .build();
+            }
+        };
     }
 }
