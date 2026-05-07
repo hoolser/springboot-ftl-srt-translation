@@ -30,8 +30,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
-                        // Disable CSRF for blob storage endpoints (they don't require authentication)
-                        .ignoringRequestMatchers("/api/storage/blobs/**", "/api/admin/storage/blobs/**", "/api/courses/**")
+                        // Disable CSRF for blob storage endpoints and APIs to fix POST/DELETE blocks
+                        .ignoringRequestMatchers("/api/storage/blobs/**", "/api/admin/storage/blobs/**", "/api/courses/**", "/vibes/api/**")
                 )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
@@ -43,7 +43,7 @@ public class SecurityConfig {
                                 .requestMatchers("/error", "/error/**").permitAll()
                                 .requestMatchers("/admin-contact/**").permitAll()
                                 // Only SRT translation endpoints and Admin storage require ADMIN role
-                                .requestMatchers("/api/srt/translation/**", "/srt-translation-page", "/api/admin/storage/blobs/**", "/admin-share-file-blob", "/admin/browser/**", "/admin-email/**", "/vibes/admin", "/vibes/api").hasRole("ADMIN")
+                                .requestMatchers("/api/srt/translation/**", "/srt-translation-page", "/api/admin/storage/blobs/**", "/admin-share-file-blob", "/admin/browser/**", "/admin-email/**", "/vibes/admin", "/vibes/api", "/vibes/api/**", "/vibes/export").hasRole("ADMIN")
                                 // Opensearch endpoints
                                 .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/courses/**").hasRole("ADMIN")
                                 .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/courses/**").hasRole("ADMIN")
