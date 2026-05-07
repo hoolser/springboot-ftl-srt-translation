@@ -1,4 +1,4 @@
-<div style="text-align: center; margin: 40px auto; padding: 20px; max-width: 800px; background-color: rgba(255, 255, 255, 0.05); border-radius: 10px; border-left: 5px solid #28a745;">
+<div style="text-align: center; margin: 40px auto; padding: 20px; max-width: 800px; background-color: rgba(255, 255, 255, 0.05); border-radius: 10px; border-left: 2.5px solid #28a745;  border-right: 2.5px solid #28a745;">
 <#--    <h3 style="color: #28a745; margin-bottom: 10px;">?? Random Vibe ??</h3>-->
     <div id="vibeContainer">
         <button id="fetchVibeBtn" style="background-color: #28a745; color: white; padding: 10px 22px; border: none; border-radius: 25px; cursor: pointer; font-size: 15px; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
