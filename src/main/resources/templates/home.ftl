@@ -90,7 +90,7 @@
         </#if>
     </div>
     <h1>Welcome to the LeafLogic!</h1>
-    <p>${message}</p>
+    <#--<p>${message}</p>-->
     <div class="home-buttons">
         <#--<a href="/storage-blob-page">
             <button class="home-button" style="margin-top: 30px;">Go to Storage Blob Management</button>
