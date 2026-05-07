@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+import org.springframework.security.access.AccessDeniedException;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -54,6 +55,14 @@ public class GlobalExceptionHandler {
         mav.addObject("requestUri", request.getRequestURI());
 
         return mav;
+    }
+
+    /**
+     * Hand over AccessDeniedException to Spring Security
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public void handleAccessDeniedException(AccessDeniedException ex) throws AccessDeniedException {
+        throw ex; // Re-throw so Spring Security ExceptionTranslationFilter can handle it
     }
 
     /**

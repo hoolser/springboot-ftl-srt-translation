@@ -108,6 +108,9 @@
             <a href="/admin-email">
                 <button class="home-button" style="margin-top: 30px; background-color: #c0392b;">Admin Test Email Service</button>
             </a>
+            <a href="/vibes/admin">
+                <button class="home-button" style="margin-top: 30px; background-color: #8e44ad;">Admin Vibe (OpenSearch)</button>
+            </a>
         </#if>
         <a href="/srt-translation-page">
             <button class="home-button" style="margin-top: 30px;">Go to SRT Translation</button>
@@ -117,6 +120,10 @@
         </a>
     </div>
 </div>
+
+<#if vibeSectionEnabled?? && vibeSectionEnabled>
+    <#include "vibe.ftl">
+</#if>
 <#include "footer.ftl">
 </body>
 </html>

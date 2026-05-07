@@ -10,6 +10,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.beans.factory.annotation.Value;
+
+import com.tasos.demo.opensearch.VibeService;
 
 @Controller
 public class HomeController {
@@ -18,6 +21,12 @@ public class HomeController {
 
     @Autowired
     private MessageService messageService;
+
+    @Value("${show.vibe.section:false}")
+    private boolean vibeSectionEnabled;
+
+    @Autowired(required = false)
+    private VibeService vibeService;
 
     private boolean isUserAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -34,6 +43,7 @@ public class HomeController {
         logger.info("Start HomeController.home");
         model.addAttribute("message", messageService.getMessage());
         model.addAttribute("isAdmin", isUserAdmin());
+        model.addAttribute("vibeSectionEnabled", vibeSectionEnabled);
         logger.info("End HomeController.home");
         return "home";
     }
