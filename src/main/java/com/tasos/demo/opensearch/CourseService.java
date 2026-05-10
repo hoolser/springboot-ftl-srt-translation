@@ -59,11 +59,19 @@ public class CourseService {
         boolean hasConditions = false;
 
         if (title != null && !title.trim().isEmpty()) {
-            boolQueryBuilder.must(m -> m.wildcard(w -> w.field("title").value("*" + title.toLowerCase() + "*")));
+            String qTitle = title.contains("*") ? title : title.trim() + "*";
+            boolQueryBuilder.must(m -> m.queryString(qs -> qs
+                    .fields("title")
+                    .query(qTitle)
+                    .defaultOperator(org.opensearch.client.opensearch._types.query_dsl.Operator.And)));
             hasConditions = true;
         }
         if (description != null && !description.trim().isEmpty()) {
-            boolQueryBuilder.must(m -> m.wildcard(w -> w.field("description").value("*" + description.toLowerCase() + "*")));
+            String qDesc = description.contains("*") ? description : description.trim() + "*";
+            boolQueryBuilder.must(m -> m.queryString(qs -> qs
+                    .fields("description")
+                    .query(qDesc)
+                    .defaultOperator(org.opensearch.client.opensearch._types.query_dsl.Operator.And)));
             hasConditions = true;
         }
 
