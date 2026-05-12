@@ -2,12 +2,6 @@
 
 A user-friendly web application for translating SRT subtitle files from English to Greek using DeepL or Azure Translator services. Simply upload your SRT file, and get your translated subtitles ready to download!
 
-##  Live Demo
-
-You can check out the live application deployed on an Oracle Cloud VM here: 
-
-###  [https://leaflogic.xyz/](https://leaflogic.xyz/)
-
 ## Features
 
 -   **Easy-to-use Web Interface**: Drag-and-drop or click to upload SRT files
